@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= tituloAba %></title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, textarea, select { width: 100%; max-width: 400px; padding: 6px; margin-top: 4px; }
+        textarea { height: 80px; resize: vertical; }
+        button { margin-top: 14px; padding: 8px 18px; cursor: pointer; }
+        .erros { background: #fdecea; border: 1px solid #e74c3c; padding: 10px 16px;
+                 border-radius: 4px; margin-bottom: 14px; max-width: 420px; }
+        .erros ul { margin: 0; padding-left: 18px; }
+        .erros li { color: #c0392b; margin: 4px 0; }
+        a { display: inline-block; margin-top: 14px; }
+    </style>
+</head>
+<body>
+
+    <h1><%= tituloPagina %></h1>
+
+    <!-- Exibe lista de erros do express-validator -->
+    <% if (erros && erros.length > 0) { %>
+    <div class="erros">
+        <strong>Corrija os campos abaixo:</strong>
+        <ul>
+            <% erros.forEach((e) => { %>
+                <li><%= e.msg %></li>
+            <% }); %>
+        </ul>
+    </div>
+    <% } %>
+
+    <form action="/nova-tarefa" method="post">
+
+        <input type="hidden" name="id_tarefa" id="id_tarefa" value="<%= id_tarefa %>">
+
+        <label for="tarefa">Tarefa:</label>
+        <textarea name="tarefa" id="tarefa"><%= tarefa.nome_tarefa %></textarea>
+
+        <label for="prazo">Prazo:</label>
+        <input type="date" name="prazo" id="prazo"
+               value="<%= tarefa.prazo_tarefa ? moment(tarefa.prazo_tarefa).format('YYYY-MM-DD') : '' %>">
+
+        <label for="situacao">Situação:</label>
+        <%
+            let selecionado = ["", "", "", "", ""];
+            selecionado[tarefa.situacao_tarefa] = "selected";
+        %>
+        <select name="situacao" id="situacao">
+            <option <%= selecionado[0] %> value="0">Cancelada</option>
+            <option <%= selecionado[1] %> value="1">Pendente</option>
+            <option <%= selecionado[2] %> value="2">Iniciada</option>
+            <option <%= selecionado[3] %> value="3">Finalizada</option>
+            <option <%= selecionado[4] %> value="4">Atrasada</option>
+        </select>
+
+        <br>
+        <button type="submit">Salvar</button>
+        <a href="/">← Voltar para a lista</a>
+    </form>
+
+</body>
+</html>
