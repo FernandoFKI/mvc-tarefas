@@ -3,15 +3,13 @@ const router = express.Router();
 const moment = require("moment");
 moment.locale('pt-br');
 
-// Express Validator
+
 const { body, validationResult } = require("express-validator");
 
 // Requisição do Model
 const { tarefasModel } = require("../models/tarefasModel");
 
-// =============================================
-// REGRAS DE VALIDAÇÃO (reutilizadas em create e update)
-// =============================================
+
 const regrasTarefa = [
     body("tarefa")
         .trim()
@@ -34,9 +32,7 @@ const regrasTarefa = [
         .withMessage("A situação deve ser um valor inteiro entre 0 e 4.")
 ];
 
-// =============================================
-// LISTAGEM DE TAREFAS
-// =============================================
+
 router.get("/", async (req, res) => {
     res.locals.moment = moment;
     try {
@@ -47,9 +43,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-// =============================================
-// FORMULÁRIO: NOVA TAREFA
-// =============================================
+
 router.get("/nova-tarefa", (req, res) => {
     res.locals.moment = moment;
     res.render("pages/cadastro", {
@@ -61,9 +55,7 @@ router.get("/nova-tarefa", (req, res) => {
     });
 });
 
-// =============================================
-// FORMULÁRIO: EDITAR TAREFA
-// =============================================
+
 router.get("/editar", async (req, res) => {
     res.locals.moment = moment;
     const id = req.query.id;
@@ -81,17 +73,14 @@ router.get("/editar", async (req, res) => {
     }
 });
 
-// =============================================
-// POST: SALVAR TAREFA (CADASTRO E ALTERAÇÃO)
-// Aplica express-validator antes de processar
-// =============================================
+
 router.post("/nova-tarefa", regrasTarefa, async (req, res) => {
     res.locals.moment = moment;
 
     const erros = validationResult(req);
 
     if (!erros.isEmpty()) {
-        // Reexibe o formulário com os erros e os dados já digitados
+
         const tarefaForm = {
             id_tarefa:     req.body.id_tarefa   || "",
             nome_tarefa:   req.body.tarefa       || "",
@@ -129,9 +118,7 @@ router.post("/nova-tarefa", regrasTarefa, async (req, res) => {
     }
 });
 
-// =============================================
-// EXCLUSÃO LÓGICA (via link na listagem)
-// =============================================
+
 router.get("/excluir-logico", async (req, res) => {
     const id = req.query.id;
     try {
@@ -142,11 +129,7 @@ router.get("/excluir-logico", async (req, res) => {
     }
 });
 
-// =============================================
-// ROTAS DE TESTE
-// =============================================
 
-// Teste de delete físico — remove o registro id=4 permanentemente
 router.get("/teste-delete", async (req, res) => {
     const id = 4;
     try {
@@ -159,7 +142,7 @@ router.get("/teste-delete", async (req, res) => {
     }
 });
 
-// Teste de delete lógico — inativa o registro id=3 (status_tarefa = 0)
+
 router.get("/teste-delete-logico", async (req, res) => {
     const id = 3;
     try {
@@ -172,7 +155,7 @@ router.get("/teste-delete-logico", async (req, res) => {
     }
 });
 
-// Teste de insert direto
+
 router.get("/teste-create", async (req, res) => {
     let dadosInsert = {
         nome: "remover virus do PC 2 do 2B",

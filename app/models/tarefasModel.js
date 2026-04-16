@@ -33,12 +33,7 @@ const tarefasModel = {
     },
 
     create: async (campos) => {
-        // campos é um json no seguinte formato
-        // { 
-        // nome:"ONONON", 
-        // prazo:"9999-99-99"
-        // situacao:9
-        // }
+
         try {
             const [resultado] = await
                 pool.query("insert into tarefas(`nome_tarefa`,`prazo_tarefa`,`situacao_tarefa`) "
@@ -52,13 +47,7 @@ const tarefasModel = {
     },
 
     update: async (campos) => {
-        // campos é um json no seguinte formato
-        // {
-        // id: 9    
-        // nome:"ONONON", 
-        // prazo:"9999-99-99"
-        // situacao:9
-        // } 
+
         try {
             const [resultado] = await
                 pool.query("update tarefas set `nome_tarefa`= ?, " +
@@ -72,7 +61,6 @@ const tarefasModel = {
         }
     },
 
-    // Delete físico: remove permanentemente o registro do banco de dados
     deletePhysical: async (id) => {
         try {
             const [resultado] = await
@@ -83,7 +71,6 @@ const tarefasModel = {
         }
     },
 
-    // Delete lógico: inativa o registro alterando status_tarefa para 0
     deleteLogical: async (id) => {
         try {
             const [resultado] = await
